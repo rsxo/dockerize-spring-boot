@@ -1,8 +1,5 @@
-FROM centos
-
-RUN yum install -y java
-
+FROM frolvlad/alpine-oraclejdk8:slim
+ENV JAVA_OPTS=""
 VOLUME /tmp
-ADD /target/dockerize-spring-boot-0.0.1-SNAPSHOT.jar dockerize-spring-boot.jar
-RUN sh -c 'touch /dockerize-spring-boot.jar'
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/dockerize-spring-boot.jar"]
+COPY target/dockerize-spring-boot-*.jar dockerize-spring-boot.jar
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /dockerize-spring-boot.jar"]
